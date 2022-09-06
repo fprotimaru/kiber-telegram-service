@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./pb";
+
+service Telegram {
+  rpc SendDocument(SendDocumentRequest) returns (SendDocumentReply);
+}
+
+message SendDocumentRequest {
+  int64 chat_id = 1;
+  string caption = 2;
+  bytes file = 3;
+  string file_name = 4;
+}
+
+message SendDocumentReply {}
