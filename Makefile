@@ -14,3 +14,6 @@ build:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o build/telegram cmd/main.go
 
 deploy: build
+	ssh kiber "systemctl stop telegram.service"
+	scp build/telegram kiber:/var/local/bin/telegram
+	ssh kiber "systemctl start telegram.service"
