@@ -16,20 +16,20 @@ import (
 )
 
 const (
-	TOKEN   = "5722224930:AAHzVtMAl-OwftEVbw6Ululaef16o_yaFLA"
-	PsqlUrl = "postgres://root:1@localhost:5432/telegram_service?sslmode=disable"
+// TOKEN   = "5722224930:AAHzVtMAl-OwftEVbw6Ululaef16o_yaFLA"
+// PsqlUrl = "postgres://root:1@localhost:5432/telegram_service?sslmode=disable"
 )
 
 func main() {
-	// token := os.Getenv("TOKEN")
-	// psqlUrl := os.Getenv("PSQL_URL")
+	token := os.Getenv("TOKEN")
+	psqlUrl := os.Getenv("PSQL_URL")
 
-	dbConn, err := repository.NewTelegramUserRepository(PsqlUrl)
+	dbConn, err := repository.NewTelegramUserRepository(psqlUrl)
 	if err != nil {
 		log.Fatalf("repository.NewTelegramUserRepository error: %v\n", err)
 	}
 
-	srv := service.New(TOKEN, dbConn)
+	srv := service.New(token, dbConn)
 	go srv.Listen(context.Background())
 
 	gRPCServer := grpc.NewServer()
