@@ -1,22 +1,36 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"telegram/internal/repository"
 	"telegram/internal/service"
 	"telegram/pb"
 
 	"google.golang.org/grpc"
 )
 
-func main() {
-	token := os.Getenv("TOKEN")
+const (
+	TOKEN   = "5722224930:AAHzVtMAl-OwftEVbw6Ululaef16o_yaFLA"
+	PsqlUrl = "postgres://root:1@localhost:5432/telegram_service?sslmode=disable"
+)
 
-	srv := service.New(token)
+func main() {
+	// token := os.Getenv("TOKEN")
+	// psqlUrl := os.Getenv("PSQL_URL")
+
+	dbConn, err := repository.NewTelegramUserRepository(PsqlUrl)
+	if err != nil {
+		log.Fatalf("repository.NewTelegramUserRepository error: %v\n", err)
+	}
+
+	srv := service.New(TOKEN, dbConn)
+	go srv.Listen(context.Background())
 
 	gRPCServer := grpc.NewServer()
 	pb.RegisterTelegramServer(gRPCServer, srv)

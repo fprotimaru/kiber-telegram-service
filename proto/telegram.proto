@@ -9,7 +9,7 @@ service Telegram {
 }
 
 message SendDocumentRequest {
-  int64 chat_id = 1;
+  string phone = 1;
   string caption = 2;
   bytes file = 3;
   string file_name = 4;
