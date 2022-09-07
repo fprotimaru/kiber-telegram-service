@@ -54,6 +54,7 @@ func (s *Service) SendDocument(ctx context.Context, req *pb.SendDocumentRequest)
 		Bytes: file,
 	})
 	doc.Caption = caption
+	doc.ParseMode = "MarkdownV2"
 
 	_, err = s.bot.Send(doc)
 	if err != nil {
