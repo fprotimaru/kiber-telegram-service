@@ -4,7 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
+	"strings"
 
 	"telegram/internal/entity"
 	"telegram/internal/repository"
@@ -77,6 +79,11 @@ func (s *Service) Listen(ctx context.Context) {
 					ChatID: update.Message.Chat.ID,
 					Phone:  update.Message.Contact.PhoneNumber,
 				}
+
+				if !strings.HasPrefix(telegramUser.Phone, "+") {
+					telegramUser.Phone = fmt.Sprintf("+%s", telegramUser.Phone)
+				}
+
 				err := s.telegramUserRepo.Create(ctx, &telegramUser)
 				if err != nil {
 					log.Printf("s.telegramUserRepo.Create error: %v\n", err)
