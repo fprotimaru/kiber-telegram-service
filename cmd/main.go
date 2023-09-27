@@ -23,7 +23,7 @@ const (
 func main() {
 	token := os.Getenv("TOKEN")
 	psqlUrl := os.Getenv("PSQL_URL")
-
+	println(123)
 	dbConn, err := repository.NewTelegramUserRepository(psqlUrl)
 	if err != nil {
 		log.Fatalf("repository.NewTelegramUserRepository error: %v\n", err)
